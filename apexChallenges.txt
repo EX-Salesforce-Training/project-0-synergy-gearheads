@@ -1,0 +1,73 @@
+Gabe
+
+
+
+
+
+public class Challenge {
+    List<Account> myAccount = new List<Account>();
+    List<Contact> myContact = new List<Contact>();
+    
+    
+    // Challenge 1
+    public void challengeOne() {
+        for(integer i = 0; i < 151; i++){
+            Account acc = new Account();
+            acc.Name = 'Pokemon #' + i;
+            myAccount.add(acc);
+        }
+        insert myAccount;
+    }
+    
+    
+    // Challenge 2
+    public void deleteAccounts() {
+        for(Account acc : [SELECT Name FROM Account WHERE Name like 'Pokemon%']) {
+            myAccount.remove();
+        }
+        
+        update myAccount;
+    }
+    
+    
+    // Challenge 3
+    public void makeEmails(){
+        for(Contact con : [SELECT Email FROM Contact WHERE Email = NULL]){
+                con.email = 'myemail';
+            	myContact.add(con);
+        }
+        for(Contact con : [SELECT phone FROM Contact WHERE phone = NULL]){
+                con.phone = 'None';
+            	myContact.add(con);
+        }
+        
+        insert myContact;
+    }
+    
+    
+    
+    // Challenge 4
+    public void newContacts() {
+        for(integer i = 0; i < 200; i++){
+            Contact con = new Contact();
+            myContact.add(con);
+        }
+        
+        update myContact;
+        
+        for(integer i = 0; i < myContact.size(); i++) {
+            myContact[i].name = 'bob';
+        }
+        
+        upsert myContact;
+    }
+	
+
+	    
+    
+    
+    
+    
+    
+  
+}
