@@ -3,24 +3,23 @@
  email and/or phone number associated with them, 
  and provide default data for those fields.
 */
-//"default data"?
 public class Completeness {
     
     public void FindAllContacts(){
 
-        for( Contact c : [SELECT Email, Phone FROM Contact ]){
-            if(c.Email == null && c.Phone==null){
+        for( Contact c : [SELECT Email, Phone FROM Contact]){
+            if(c.Email == null){
                 c.email= '12345678@gmail.com';
-                c.Phone = '555 555 5555';
                 update c;
-                
             }
             
-          }
-                           }
+            if(c.Phone==null){
+                c.Phone = '555 555 5555'; 
+                update c;
+            }
+              }  
+    }
                           
-        
-
 }
 
 
@@ -40,11 +39,11 @@ These accounts should have unique names.*/
 
 public class PokeMan {
     
-    List <account> lists = new List<account>();
+    List <account> lists = new List<account>(Integer NumAcc);
     public void AddAccount(){
     
-        for(Integer i = 0; i < 152; i++){
-          lists.add(new account(Name='Name' + i));
+        for(Integer i = 0; i < NumAcc; i++){
+          lists.add(new account(Name='PokeMan' + i));
         }
       insert lists; 
     }  
