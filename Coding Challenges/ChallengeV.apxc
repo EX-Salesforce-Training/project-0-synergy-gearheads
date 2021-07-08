@@ -1,0 +1,29 @@
+public class ChallengeV {
+    
+    public ChallengeV(){
+		
+    }
+    
+    public void AssignOwner(){
+        List<Task> newTaskList = new List<Task>();
+        List<Contact> updatedContactPhone = new List<Contact>();
+        for(Contact c : [SELECT Email, Phone, OwnerId, Name, Account.Phone FROM Contact WHERE Email = Null or Phone = Null]){
+            Task bobsTask = new Task();
+            bobsTask.OwnerId = c.OwnerId;
+        	bobsTask.Status = 'Not Started';
+        	//if(c.email == Null && c.Phone == Null){
+            //	bobsTask.Subject = 'Other';
+            //}
+            if(c.Phone == Null){
+            	c.Phone = c.Account.Phone;
+                updatedContactPhone.add(c);
+        	}
+            if(c.email == Null){
+           		bobsTask.Subject = 'Call';
+                newTaskList.add(bobsTask);
+        	}
+        }
+        insert newTaskList;
+        update updatedContactPhone;
+    }
+}
