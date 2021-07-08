@@ -1,0 +1,103 @@
+Jawad Chowdhury
+
+
+1.
+
+public class Pokemon {
+
+    List<Contact> pokeContacts = new List<Contact>();
+    
+    integer value = 152;
+   for(integer i = 0; i < value; i++)
+   {
+       Contact c = new Contact();
+       c.LastName = 'Pikachu' + i;
+       pokeContacts.add(c);
+   }
+    insert pokeContacts;
+
+
+}
+
+
+2.
+
+
+public class PokeLeave {
+
+    List<Contact> pokeContacts = new List<Contact>();
+    
+    integer value = 152;
+   for(integer i = 0; i < value; i++)
+   {
+       Contact c = new Contact();
+       c.LastName = 'Pikachu' + i;
+       pokeContacts.add(c);
+   }
+    insert pokeContacts;
+    
+    for(Contact c : [SELECT LastName FROM Contact WHERE LastName like 'Pikachu%'])
+    {
+        pokeContacts.add(c);
+        
+    }
+    delete pokeContacts;
+}
+
+
+
+3. //Did not finish. Need help with logic with putting both phone and contact at the same time
+
+public class NoEmailPhone {
+
+    List<String> phone = new List<String>();
+    List<String> email = new List<String>();
+    
+    //This one I really struggled in
+    
+    
+    
+}
+
+
+4.
+
+
+
+public class PokeBob {
+
+    List<Contact> bobConvert = new List<Contact>;
+    
+    for(integer i = 0; i < 200; i++)
+    {
+       Contact c = new Contact();
+       c.FirstName = "BOB";
+       c.LastName = 'Pikachu' + i;
+       bobConvert.add(c);
+    }
+    
+    for(Contact c : [SELECT FirstName FROM Contact WHERE FirstName != 'BOB'])
+    {
+        c.FirstName = 'BOB';
+        bobConvert.add(c);
+    }
+    
+    upsert bobConvert;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
+
+
+
+
+
+
