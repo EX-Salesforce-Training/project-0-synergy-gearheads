@@ -1,0 +1,57 @@
+/*
+ Query for all contacts that do not have a 
+ email and/or phone number associated with them, 
+ and provide default data for those fields.
+*/
+//"default data"?
+public class Completeness {
+    
+    public void FindAllContacts(){
+
+        for( Contact c : [SELECT Email, Phone FROM Contact ]){
+            if(c.Email == null && c.Phone==null){
+                c.email= '12345678@gmail.com';
+                c.Phone = '555 555 5555';
+                update c;
+                
+            }
+            
+          }
+                           }
+                          
+        
+
+}
+
+
+//Query for the accounts you made, and then remove them from the database.
+public class DeletAccount {
+
+     Account [] acc;
+    public void deleteAcc(){
+        acc = [SELECT Id FROM Account WHERE Name LIKE 'Name%'];
+        Delete acc;
+
+    }
+  }
+  
+  /*create a class that has a method to add 151 accounts to your org.
+These accounts should have unique names.*/
+
+public class PokeMan {
+    
+    List <account> lists = new List<account>();
+    public void AddAccount(){
+    
+        for(Integer i = 0; i < 152; i++){
+          lists.add(new account(Name='Name' + i));
+        }
+      insert lists; 
+    }  
+    
+ 
+   
+
+  
+}
+  
