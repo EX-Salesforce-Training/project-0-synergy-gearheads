@@ -1,0 +1,75 @@
+public class extendAndImplement extends Vehicle implements Bus {
+   
+  
+    public extendAndImplement(){
+         super('Toyota');
+           }
+    
+    public String SUV(String name){
+        return '';
+    }
+    
+    public  String AirPlane(String name){
+        return '';
+    }
+    
+    public  String Ship(String types){
+         return '';
+    }
+    public override Double getSpeed(){
+        return 0.0;   
+    }
+    public override void setSpeed(Double s){
+      
+    }
+    public override integer getNumVhicle(){
+        return 0;
+    }
+    public override void setNumVhicle(Integer num){
+        
+    }
+    
+}
+public abstract class Vehicle {
+    private Double Speed;
+    private Integer NumOfVhicle;
+    public String nameOfVhicle;
+   
+    enum transportMode { AIR, WATER, LAND }
+    
+    public Vehicle( Double S, 	Integer num, String name){
+        this.Speed = s;
+        this.NumOfVhicle = num;
+        this.nameOfVhicle = name;
+        
+    }
+     public Vehicle(string name){
+         this.nameOfVhicle = name;
+    }
+   
+    public virtual Double getSpeed(){
+        return Speed;
+    }
+   
+    public virtual Integer getNumVhicle(){
+        return NumOfVhicle;
+    }
+    
+     public abstract void setSpeed(Double s);
+        
+    public abstract void setNumVhicle(Integer num);
+       
+    
+     
+   
+    
+}    
+
+public interface Bus {
+    
+    String SUV(String name);
+    String AirPlane(String name);
+    String Ship(String types);
+   
+   
+}
