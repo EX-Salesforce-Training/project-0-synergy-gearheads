@@ -12,10 +12,21 @@ public class extendAndImplement extends Vehicle implements Bus {
     public  String AirPlane(String name){
         return '';
     }
-    
-    public  String Ship(String types){
+   public  String Ship(String types){
          return '';
     }
+    
+    //overloadding
+    public void AirPlane(){
+
+    }
+    
+    public Integer Ship(Integer ShipNum){
+        return 0;
+    }
+
+
+    //overridding extended class methods
     public override Double getSpeed(){
         return 0.0;   
     }
