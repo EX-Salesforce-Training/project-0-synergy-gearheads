@@ -1,0 +1,11 @@
+public interface ElectricCar {
+    
+    void startEngine();
+    
+    void accelerate();
+    
+    void applyBrakes();
+    
+    void chargeBattery();
+   
+}

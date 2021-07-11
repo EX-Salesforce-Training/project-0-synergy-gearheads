@@ -1,0 +1,75 @@
+public class Tesla extends Vehicle implements ElectricCar{
+    integer year;
+    string model;
+    string color;
+    boolean engineOn = false;
+    private integer batteryLife = 100;
+    final integer maxSpeed = 200;
+    
+    public Tesla() {
+    	super();
+    }
+    
+    public integer getSpeed() {
+        system.debug('Speed: ' + super.speed);
+        return super.speed;
+    }
+    
+    public integer getBatteryLife() {
+        system.debug('Battery: ' + this.batteryLife);
+        return this.batteryLife;
+    }
+    
+    public void teslaDescription(String color, integer year, String model) {
+        this.color = color;
+        this.year = year;  
+        this.model = model;
+    }
+    
+    public void startEngine() {
+        if(this.batteryLife > 0) {
+            system.debug('Engine ON');
+            this.engineOn = true;
+        	this.batteryLife -= 10;
+        } else {
+            system.debug('Cannot turn engine on. Please charge battery');
+        }
+        
+    }
+    
+    public override void drive(integer speed) {
+        if (engineOn == true) {
+            if (speed < maxSpeed && speed > 0) {
+                super.speed = speed;
+                this.batteryLife -= 10;
+            } else {
+                system.debug('Cannot exceed maximum speed of 200 mph');
+            }
+        } else {
+            system.debug('Start engine to drive');
+        }
+    }
+    
+    public void accelerate() {
+        if (engineOn == true && super.speed < maxSpeed) {
+            super.speed++;
+        	this.batteryLife -= 10;
+        } 
+    }
+    
+    public void applyBrakes() {
+        if (engineOn == true && super.speed > 0) {
+            super.speed--;
+        	this.batteryLife += 5;
+        }
+    }
+    
+    public override void stop() {
+        super.stop();
+        engineOn = false;
+    }
+    
+    public void chargeBattery() {
+        this.batteryLife = 100;
+    }
+}
