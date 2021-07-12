@@ -1,0 +1,11 @@
+trigger AccountTrigger on Account (before insert, before delete) {
+    Switch on Trigger.OperationType{
+        When BEFORE_INSERT{
+            AccountTriggerHelper.NoCali(Trigger.new);
+        }
+        When BEFORE_DELETE{
+            AccountTriggerHelper.PreventDeletion(Trigger.new);
+        }
+        }
+    
+}
