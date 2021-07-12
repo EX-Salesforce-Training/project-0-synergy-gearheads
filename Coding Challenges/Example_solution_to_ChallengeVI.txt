@@ -1,0 +1,108 @@
+/*
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Name: Challenge VI
+// Author: Harvey Hill(Harvey.Hill@Revature.com)
+// Created Date: 7/8/21
+// Last Modified Date: 7/9/21
+// Description: Step 1: Create a method that creates N number of accounts, within 
+//                     it call a second method that creates N contacts. Relate the
+//                     newly created contacts to the newly created accounts. 
+//
+//                     As a part of this fill out the following fields for each 
+//                     account: Name, annual revenue, phone, and site.
+//
+//                     Fill out the following contact fields: 
+//                     Last name, first name, phone, and email.
+//
+//               Step 2: Once these are created ensure they are inserted 
+//                     into the database.
+//
+//               Step3: Create a third method that gets all child contacts from 
+//                      the account using a relationship query, and then changes 
+//                      the contact phone number to the account phone number. 
+//                      Persist these changes.
+//
+//               Step 4: Query for contacts and retrieve each contacts first and 
+//                       last name, and then the related account name, phone, and 
+//                       site. Using system.debug display each of these in a 
+//                       debug log.
+//               
+//////////////////////////////////////////////////////////////////////////////////
+*/
+public class ChallengeVI {
+	
+    // Step 1 & 2
+    // Create N number of accounts, and a related contact for them.
+    public void CreateAccounts(integer n) {
+        // A list to store our new accounts.
+        List<Account> bobsList = new List<Account>();
+        for(integer i = 0; i<n;i++) {
+            // Create the new accounts.
+            Account bob = new Account();
+            bob.name = 'Account' + i;
+            bob.AnnualRevenue = i;
+            // Generate a semi-random phone number.
+            bob.Phone = string.valueof(123456789 + i);
+            bob.Site = 'www.'+i+'.com';
+            // add to the list.
+            bobsList.add(bob);
+        }
+        // Persist the accounts into the database.
+        insert bobsList;
+        // Call a method to create related contacts.
+        CreateContacts(bobsList);
+    }
+    
+    // Create a single contact for each account in the list argument.
+    public void CreateContacts(List<Account> AccList){
+        // list to store the new contacts.
+        List<Contact> AccContacts = new List<Contact>();
+        // for every account, create a contact.
+        for(Account a : AccList) {
+            // create the contact
+            Contact c = new Contact();
+            c.lastname = a.name+'Corpman';
+            c.firstname = 'bob';
+            // assign a semi-random phone number.
+            c.phone = string.valueof(987654321+integer.valueOf(Math.random() * 100));
+            c.email = c.firstname + '@' +a.name+'.com';
+            // related the contact to a parent account.
+            c.AccountId = a.id;
+            // add new contact to the list.
+            AccContacts.add(c);
+        }
+        // Persist the new contacts.
+        insert AccContacts;
+    }
+    
+    // Step 3
+    // Update all child contacts to share a phone number with the parent account. 
+    public void UpdateChildContacts(){
+        // get the accounts.
+        List<Account> accList = [SELECT phone, (SELECT Id, phone FROM Contacts) FROM Account];
+        // A place to store the updated contacts.
+        List<Contact> conList = new List<Contact>();
+        for(Account a : accList) {
+            if(a.Contacts != null){
+                List<Contact> curContacts = a.Contacts;
+                for(Contact c : curContacts) {
+                    c.phone = a.phone;
+                    // Add the updated contact to list.
+                    conList.add(c);
+                }
+            }
+        }
+        // persist the list.
+        update conList;
+    }
+    
+    // Step 4
+    // Display Contacts with related account information.
+    public static void SystemLog(){
+        for(contact c : [SELECT FirstName, LastName, Account.Name, Account.Phone, Account.Site FROM Contact]){
+            system.debug(c.FirstName + ' ' + c.LastName + ', From:'+ c.Account.Name + '. Reachable at: ' + c.Account.Phone + ' and ' + c.Account.Site);
+        }
+    }
+    
+}
