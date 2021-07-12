@@ -1,0 +1,39 @@
+public class AccountTriggerHandler {
+    public static void checkOpportunities(List<Account> accList) {
+        List<Opportunity> noDeleteOpp = new List<Opportunity>();
+        for (Opportunity o : [SELECT AccountId, Stagename FROM Opportunity WHERE StageName != 'CLosed Won' AND StageName != 'Closed Lost']) {
+            noDeleteOpp.add(o);
+            system.debug(noDeleteOpp);
+        }
+        for (Account acc : accList) {
+            for (Opportunity opp : noDeleteOpp) {
+                if (acc.Id == opp.AccountId) {
+                    acc.addError('Account has potential opportunity. It can\'t be deleted.');
+                }
+            }  
+        }       
+    }
+    
+    public static void checkLocationForNewAcc(List<Account> accList) {
+        for (Account a : accList) {
+            if (a.BillingState == 'CA' || a.ShippingState == 'CA') {
+                a.addError('State not allowed!');
+            }
+        }
+    }
+    
+    public static void genericPlaceholder(List<Account> accList) {
+        for (Account a : [SELECT Id, (SELECT AccountId from Contacts) FROM Account]) {
+            for (Contact c : [Select AccountId FROM Contact]) {
+                if (c.AccountId == Null) {
+                	Contact newC = new Contact();
+                    newC.AccountId = a.Id;
+                    //newC.Name = a.Name; field is not writable
+                    newC.Phone = a.Phone;
+                    //newC.Email = a.Email;
+            	}
+            }
+        }
+    }
+
+}
