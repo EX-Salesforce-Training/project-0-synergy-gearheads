@@ -46,7 +46,66 @@ public class PokeMan {
           lists.add(new account(Name='PokeMan' + i));
         }
       insert lists; 
-    }  
+    } 
+
+   /* We have received new requirements that the data 
+ * in our org needs to meet new completeness 
+ * standards. To facilitate this we are going to 
+ * use SOQL to check our data and handle it by setting 
+ * a default value for the phone to be equal to the related 
+ * account, and create a task if it is missing an 
+  email for the record owner to update it*/
+
+public class Task {
+
+        
+    public void BobStatus(){
+        
+        for( Contact c : [SELECT Email FROM Contact]){
+            if(c.Email == null){
+                c.Email= '12345678@gmail.com';
+                update c;
+            }
+        
+        }}   
+    
+    public void creatNcontacts(Integer n){
+        List<contact> addCont = new List <contact>();
+        for( Integer i = 0; i < n; i++){
+            addCont.add(new contact());
+            
+        }
+        update addCont;
+        
+    }
+public class challengeIV {
+//Create 200 new contacts, plus update all existing 
+//contacts first names to bob. In a single DML 
+//update and and add the new contacts.
+
+	List<Contact> cont = new List<Contact>();
+    public void createNewAccs(Integer n){
+       
+      for(Integer i = 0; i < n; i++){
+            Contact conts = new Contact();
+            cont.add(conts);
+      }
+        insert cont;
+       } 
+    
+    List<Contact> conta = new List<Contact>();
+    public void updateName(){
+        for(Contact c : [SELECT Firstname FROM Contact]){
+            c.FirstName ='Bob';
+            conta.add(c);
+        }
+        update conta;
+    }
+    
+            
+}
+
+
     
  
    
