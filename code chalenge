@@ -112,4 +112,61 @@ public class challengeIV {
 
   
 }
+
+Challenge VI
+
+/*Create a method that creates N number of accounts,
+ *  within it call a second method that creates N contacts. Relate the newly 
+ * created contacts to the newly created accounts.
+ * As a part of this fill out the following fields for each account:
+ * Name, annual revenue, phone, and site.Fill out the following fields:
+ * Last name, first name, phone, and email.Once these are created ensure 
+ * they are inserted into the database.
+ * Create a third method that gets all child contacts from the account 
+ * using a relationship query, and then changes the contact phone number to the account phone number.
+ * Persist these changes.Query for contacts and retrieve each contacts first and last name, and then 
+ the related account name, phone, and site. Using system.debug display each of these in a debug log.
+*/
+
+public class NumberOf_N_Account {
+    
+    List<Account> Add_N_Account = new List<Account>();
+    public void Create_N_Accounts(Integer num){
+        
+        for(Integer i = 0; i < num; i++){
+            Account acc = new Account();
+            acc.name = 'AccountName_' + i;
+            acc.Phone = '55'+i + 4 + '43'+ 6+i+'5555';
+            acc.AnnualRevenue = 10000 + i + 200;
+            acc.Site = 'www.//example_'+ i +'.com';
+            Add_N_Account.add(acc);
+               
+        }
+        
+        insert Add_N_Account;
+        CreateContacts(Add_N_Account);
+    }
+    
+   
+    public void CreateContacts(List<Account> acc){
+        
+        List<Contact> cont = new List<Contact>();
+        Integer i=0;
+        for(Account co : acc){
+            
+            Contact newCon = new Contact();
+            newCon.FirstName = co.Name + 'endlk  ';
+            newCon.LastName = '   Mary';
+            newCon.Phone = '555 555 555' + i;
+            newCon.Email = i+'1234@yahoo.com';
+            newCon.AccountId = co.Id;
+            i++;
+            cont.add(newCon);
+            
+              }
+        insert cont;
+        
+         }
+    
+}
   
