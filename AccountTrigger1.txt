@@ -1,0 +1,8 @@
+trigger AccountTrigger1 on Account (before update) {
+    switch on trigger.operationType{
+        when BEFORE_UPDATE {
+            AccountTriggerHandler1.ValidateTask(trigger.new);
+        }
+    }
+
+}

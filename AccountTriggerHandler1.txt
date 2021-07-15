@@ -1,0 +1,21 @@
+public class AccountTriggerHandler1 {
+
+    public static void ValidateTask(List<Account> toCheck) {
+
+        Task task = new Task();
+        task.Subject = 'Validate the record, and update if needed';
+        task.Priority = 'Normal';
+        task.Status = 'true';
+        Database.SaveResult[] saveresult = null;
+        try {
+            saveresult = Connection.reate(new Task[] {
+                task
+            });
+        } catch (ConnectionException ce) {
+            ce.printStackTrace();
+        }
+        if(saveresult[0].isSuccess()){
+            update toCheck;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+public static void AccountSiteEmail (List<Contact> myContacts) {
+
+
+        List<Account> theAccounts = [SELECT Account.ID, Account.Site FROM Account];
+
+        for(Contact c : myContacts) {
+            for(Account a : theAccounts) {
+                if(a.Site == c.email) {
+                    c.add(theAccounts.id);
+                }
+            }
+        }
+
+    }
