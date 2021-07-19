@@ -1,0 +1,164 @@
+public class AccountTriggerHandler {
+    public static void CreateValidationTask(List<Account> accList){
+        List<Task> taskList = new List<Task>();
+        for(Account a: accList){
+            task newTask = new task();
+            newTask.subject = 'Please update and validate.';
+            newTask.priority = 'High';
+            newTask.status = 'Not Started';
+            newTask.whoId = a.OwnerId;
+            taskList.add(newTask);
+        }
+        database.insert(taskList);
+    }
+}
+
+
+trigger AccountTrigger on Account (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+    switch on trigger.operationType{
+        when BEFORE_INSERT{
+            
+        }
+   		when BEFORE_UPDATE{
+        
+    	}	
+        when BEFORE_DELETE{
+        
+    	}	
+        when AFTER_INSERT{
+        
+    	}	
+        when AFTER_UPDATE{
+            
+        }
+        when AFTER_DELETE{
+            
+        }
+        when AFTER_UNDELETE{
+            AccountTriggerHandler.CreateValidationTask(trigger.new);
+        }
+    }
+}
+
+
+//Whenever a new contact is made check to see if the email domain matches an account's site if it does, relate the new contact to the account
+
+public class ContactTriggerHandler {
+    public static void CompareEmailDomain(List<Contact> conList){
+
+        List<String> domainNames = new List<String>();
+        Map<String, List<Contact>> conMap = new Map<String, List<Contact>>();
+
+        for(Contact c : conList){
+            String domain = c.email.split('@')[1];
+            domainNames.add(domain);
+            if(!(conMap.containsKey(domain))){
+	            conMap.put(domain, new List<Contact>());
+            }
+            conMap.get(domain).add(c);
+        }
+        
+        List<Account> accList = [SELECT id, site FROM Account WHERE site in : domainNames];
+        
+        for(Account a: accList){
+            for(contact c : conMap.get(a.site)){
+                c.ownerId = a.id;
+            }
+        }
+
+    }
+}
+
+
+//Whenever a new contact is made check to see if the email domain matches an account's site if it does, relate the new contact to the account
+
+trigger ContactTrigger on Contact (before insert, before update, before delete, after insert, after update, after delete, after undelete) {	
+    Switch on trigger.OperationType{
+        when BEFORE_INSERT{
+            ContactTriggerHandler.CompareEmailDomain(trigger.new);
+        } when BEFORE_UPDATE{
+            
+        } when BEFORE_DELETE{
+            
+        } when AFTER_INSERT{
+            
+        } when AFTER_UPDATE{
+            
+        } when AFTER_DELETE{
+            
+        } when AFTER_UNDELETE{
+            
+        }
+    }
+}
+
+
+@isTest
+public class TriggersTest {
+
+    @isTest
+    static void SingleAfterUndelete(){
+        Account a = new Account(name = 'Bob Account');
+        database.insert(a);
+        database.delete(a);
+        Account acc = [SELECT Id, name FROM Account WHERE name = 'Bob Account' ALL ROWS][0];
+        try{
+            database.undelete(acc);
+        } catch(exception e){
+            
+        }
+    }
+    
+    @isTest
+    static void BulkAfterUndeleteTest(){
+        List<Account> accList = new List<Account>();
+        for (integer i = 0; i < 10; i++){
+            Account a = new Account(name = 'Bob' + i);
+            accList.add(a);
+        }
+        database.insert(accList);
+        database.delete(accList);
+        List<Account> accList2 = [SELECT Id, name FROM Account WHERE name LIKE 'Bob%' ALL ROWS];
+        try {
+            database.undelete(accList2);
+        } catch(exception e){
+            //bleh
+        }
+    }
+    
+    @isTest
+    static void NegSingleAfterUndelete(){
+        Account a = new Account(name = 'Bob Account');
+        database.insert(a);
+        try{
+            database.undelete(a);
+        } catch(exception e){
+            
+        }
+    }
+    
+    @isTest
+    static void NegBulkAfterUndeleteTest(){
+        List<Account> accList = new List<Account>();
+        for (integer i = 0; i < 10; i++){
+            Account a = new Account(name = 'Bob' + i);
+            accList.add(a);
+        }
+        database.insert(accList);
+        try {
+            database.undelete(accList);
+        } catch(exception e){
+            //bleh
+        }
+    }
+    
+    @isTest
+    static  void SingleBeforeInsert(){
+        Account newAcc = new Account();
+        Contact newCon = new Contact();
+        newAcc.site = 'gmail.com';
+        newCon.email = 'Bob@gmail.com';
+        database.insert(newAcc);
+        database.insert(newCon);
+    }
+}
