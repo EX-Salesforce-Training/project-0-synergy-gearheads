@@ -1,0 +1,22 @@
+@isTest
+private class TransactionTriggerTest {
+    @isTest
+    static void singleTransTest() {
+        //Create and insert a test record
+        Transaction__c trans1 = new Transaction__c(Amount__c = 105);
+        insert trans1;
+        
+        //Test for positive case
+        Database.DeleteResult dr = Database.delete(trans1, false);
+        
+        //Verify deletion was prevented by the trigger
+        system.assert(!dr.isSuccess());
+        System.assertEquals('Cannot delete unprocessed transactions!', dr.getErrors()[0].getMessage());
+        
+        //Test for negative case
+        trans1.Date_Processed__c = Date.today();
+        Database.SaveResult sr = Database.update(trans1, false);
+        
+        system.assert(sr.isSuccess());
+    }
+}

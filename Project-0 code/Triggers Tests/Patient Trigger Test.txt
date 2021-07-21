@@ -1,0 +1,47 @@
+@isTest
+public class PatientTriggerTest {
+	@isTest
+    static void singlePatientTest() {
+        //Create test data
+        Patient__c patient1 = new Patient__c(First_Name__c='FirstName', Last_Name__c='LastName', Phone__c='19098765432');
+        
+        //Perform positive test
+        Database.SaveResult result = Database.insert(patient1, false);
+        
+        //Verify positive case
+        system.assert(!result.isSuccess());
+        System.assertEquals('Insurance provider does not exist!', result.getErrors()[0].getMessage());
+        
+        Insurance__c ins = new Insurance__c(Name='TestInsName', Phone__c='19511234567', Contact_Email__c='TestInsEmail@test.com', Billing_Street__c = 'TestStreet',
+                                           Billing_City__c = 'TestCity', Billing_State_Province__c = 'TestState', Billing_Zip_Postal_Code__c = '12345');
+        
+        //Perform and verify negative case
+        insert ins;
+        
+        patient1.Insurance_Provider__c = 'TestInsName';
+        
+        Database.UpsertResult result1 = Database.upsert(patient1, false);
+        system.assert(result1.isSuccess());        
+    }
+    
+    @isTest
+    static void bulkPatientTest() {
+        //Perform bulk testing
+        List<Patient__c> patientList = new List<Patient__c>();
+        
+        for(Integer i=0; i<295; i++) {
+            patientList.add(new Patient__c(First_Name__c='FirstName ' + i, Last_Name__c='LastName ' + i, Phone__c='19098765432'));
+        }
+        
+        List<Database.SaveResult> result2 = Database.insert(patientList, false);
+        
+        Integer numFailed = 0;
+        for(Database.SaveResult sr : result2) {
+            if (!sr.isSuccess()) {
+                numFailed += 1;
+            }
+        }
+        
+        system.assertEquals(295, numFailed);
+    }
+}

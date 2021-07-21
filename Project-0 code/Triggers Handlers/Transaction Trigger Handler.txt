@@ -1,0 +1,11 @@
+public class TransactionTriggerHandler {
+    //Create method to check that a transaction has been processed before deleting
+    public static void noDeleteTransaction (List<Transaction__c> transList) {
+        for (Transaction__c t : transList) {
+            if (t.Date_Processed__c == Null) {
+                t.addError('Cannot delete unprocessed transactions!');
+            }
+        }
+        
+    }
+}

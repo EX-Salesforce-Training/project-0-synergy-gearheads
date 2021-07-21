@@ -1,0 +1,19 @@
+public class PatientTriggerHandler {
+    public static void notExistingInsurance(List<Patient__c> patients) {
+        //Create a list of existing insurance 
+        List<Insurance__c> existInsurance = [SELECT Name FROM Insurance__c];
+        
+        //Create a set for unique insurance names
+        Set<String> InsNameSet = new Set<String>();
+        for (Insurance__c i : existInsurance) {
+            InsNameSet.add(i.Name);
+        }
+        
+        //For each patient check insurance provider exists
+        for (Patient__c p : patients) {
+            if (!InsNameSet.contains(p.Insurance_Provider__c)) {
+                p.addError('Insurance provider does not exist!');
+            }
+        }
+    }
+}

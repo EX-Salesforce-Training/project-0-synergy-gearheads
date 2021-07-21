@@ -1,0 +1,14 @@
+public class ScheduleTriggerHandler {
+    public static void TaskToAssignSchedule(List <Schedule__c> schedule) {
+        List<Task> taskList = new List<Task>();
+        for (Schedule__c s : schedule) {
+            if (s.Approved__c == true) {
+                Task newTask = new Task();
+                newTask.Subject = 'Assign schedule ' + s.Name;
+                newTask.WhatId = s.Id;
+                taskList.add(newTask);
+            }   
+        }
+        insert taskList;
+    }
+}

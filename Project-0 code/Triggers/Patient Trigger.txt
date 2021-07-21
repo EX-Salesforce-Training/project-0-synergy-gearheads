@@ -1,0 +1,38 @@
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Name: Project-0
+// Author: Nouh Anies(Nouh.Anies@Revature.net)
+// Created Date: 7/10/2021
+// Last Modified: 7/11/2021
+// Description: This trigger is for the patient object to prevent inserting or updating a patient record if an account does not exist for the selected 
+//              insurance provider. 
+//              
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/              
+trigger PatientTrigger on Patient__c (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+    
+    switch on Trigger.OperationType {
+        when BEFORE_INSERT {
+            PatientTriggerHandler.notExistingInsurance(trigger.new);
+        }
+        when BEFORE_UPDATE {
+             PatientTriggerHandler.notExistingInsurance(trigger.new);
+        }
+        when BEFORE_DELETE {
+                 
+        }
+        when AFTER_INSERT {
+            
+        }
+        when AFTER_UPDATE {
+            
+        }
+        when AFTER_DELETE {
+            
+        }
+        when AFTER_UNDELETE {
+            
+        } 
+    }
+}

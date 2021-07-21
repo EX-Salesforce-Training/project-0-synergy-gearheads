@@ -1,0 +1,46 @@
+@isTest
+public class ScheduleTriggerTest {
+	@isTest
+    static void singleSchTest() {
+        //Create test data
+        Schedule__c sch1 = new Schedule__c(Date_Time__c = DateTime.now());
+        
+        //Perform negative test
+        insert sch1;
+        
+        //Verify negative test
+        system.assertEquals(0, [SELECT Count() FROM Task]);
+        
+        //Update schedule for performing postive test
+        sch1.Approved__c = true;
+        update sch1;
+        
+        //Verify postive test
+        system.assertEquals(1, [SELECT Count() FROM Task]);
+        
+    }
+    
+    @isTest
+    static void bulkSchTest() {
+        List<Schedule__c> schList = new List<Schedule__c>();
+        
+        for(Integer i=0; i<295; i++) {
+            schList.add(new Schedule__c(Date_Time__c = DateTime.now()));
+        }
+        
+        //Test and verify negative case
+        insert schList;
+        
+        system.assertEquals(0, [SELECT Count() FROM Task]);
+        
+        //Update all schedules to be approved
+        for(Schedule__c s : schList) {
+            s.Approved__c = true;
+        }
+        
+        //Test and verify positive case
+        update schList;
+        
+        system.assertEquals(295, [SELECT Count() FROM Task]);
+    }
+}

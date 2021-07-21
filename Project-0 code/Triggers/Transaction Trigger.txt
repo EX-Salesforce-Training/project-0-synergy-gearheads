@@ -1,0 +1,37 @@
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Name: Project-0
+// Author: Nouh Anies(Nouh.Anies@Revature.net)
+// Created Date: 7/10/2021
+// Last Modified: 7/11/2021
+// Description: This trigger is on the Transaction object to prevent a record from deletion if it has not been processed
+//              
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/              
+trigger TransactionTrigger on Transaction__c (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+    
+    switch on Trigger.OperationType {
+        when BEFORE_INSERT {
+            
+        }
+        when BEFORE_UPDATE {
+            
+        }
+        when BEFORE_DELETE {
+            TransactionTriggerHandler.noDeleteTransaction(trigger.old);     
+        }
+        when AFTER_INSERT {
+            
+        }
+        when AFTER_UPDATE {
+            
+        }
+        when AFTER_DELETE {
+            
+        }
+        when AFTER_UNDELETE {
+            
+        } 
+    }
+}
