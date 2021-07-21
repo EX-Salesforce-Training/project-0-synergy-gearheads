@@ -1,0 +1,23 @@
+// Challenge 11, part 2-2
+// 
+// Name: Carlo Mejia
+// Author: ...Carlo Mejia
+// Created: 7/14/2021
+// Updated: 
+// Description: A trigger handler that takes new contacts, and sees if there are any accounts that use the domain name
+// found in its email address. If there are, the new contact's accountId becomes the id of the account that matches it.
+
+public class contactTriggerHandler {
+    
+    public static void siteRelater(List<Contact> contacts) {
+        String domain;
+        for (Account acco : [SELECT name, id, site FROM account]) {
+            for (Contact con : contacts) {
+                domain = con.email.split('@')[1];
+                if (acco.site == domain) {
+                    con.accountId = acco.Id;
+                }
+            }
+        }
+    }
+}

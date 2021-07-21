@@ -1,0 +1,15 @@
+// Challenge 11, part 2-1
+// 
+// Name: Carlo Mejia
+// Author: ...Carlo Mejia
+// Created: 7/14/2021
+// Updated: 
+// Description: A trigger for creating new Contacts. It's before_insert only.
+
+trigger contactTrigger on Contact (before insert) {
+    switch on trigger.operationtype {
+        when BEFORE_INSERT {
+            contactTriggerHandler.siteRelater(trigger.new);
+        }
+    }
+}

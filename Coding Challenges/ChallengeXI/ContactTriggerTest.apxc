@@ -1,0 +1,23 @@
+// Challenge 11, part 2-3
+// 
+// Name: Carlo Mejia
+// Author: ...Carlo Mejia
+// Created: 7/14/2021
+// Updated: 
+// Description: A test class that sees if the trigger handler works. I've also done some manual testing by creating new
+// accounts and contacts in the app proper, and that works, too!
+
+@isTest
+public class contactTriggerTest {
+    
+    @isTest
+    static void siteRelaterTest() {
+        
+        Account acco = new Account(site='hotsingles.gov', name='Bob');
+        Contact con = new Contact(email='bob@hotsingles.gov', lastname='Bobby');
+        database.insert (acco);
+        database.insert (con);
+        system.assert(con.AccountId == acco.Id);
+    }
+    
+}

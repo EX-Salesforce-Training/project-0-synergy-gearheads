@@ -1,0 +1,62 @@
+/*
+//////////////////////////////////////////////////
+//
+//  Name: EmployeeTriggerHelper
+//  Author: Dominic Romanello
+//  Created Date: 7/21/21
+//  Modified Date: 7/21/21
+//  Description: This class is meant to handle the specific code for the Triggers on the 
+//  	Employee object so the EmployeeTrigger class is cleaner and easier to read.
+//  
+//
+/////////////////////////////////////////////////
+*/
+
+public class EmployeeTriggerHelper {
+	
+    //Prevents an employee with "Zombie" in their name to  become an employee.
+    //It iterates through the given list of new employees and adds an error on records that
+    //have "Zombie" in the name.
+    public static void PreventZombie(List<Employee__c> employeesToInsert){
+        for(Employee__c e : employeesToInsert){
+            if(e.First_Name__c == 'Zombie' || e.Last_Name__c == 'Zombie'){
+                e.addError('We are not currently accepting Zombies. Turn and try again.');
+            }
+        }
+    }
+    
+    // Prevents duplicate phone numbers from being added to Employee Records. If one
+    // employee already has that phone record an error message is placed on that record
+    // and the information is not saved.
+    public static void CheckForDuplicatePhones(List<Employee__c> employeesToInsert){
+        //A set is created and the phone numbers that are being inserted are added to a set of strings.
+        Set<String> phoneSet = new Set<String>();
+        for(Employee__c e : employeesToInsert){
+            phoneSet.add(e.Phone__c);
+        }
+        //This SOQL query finds the phone numbers from the employee records that match any phone number
+        //in the phoneSet and if they are the same value, an error is added and the records aren't added.
+        for(Employee__c employee : [SELECT Phone__c FROM Employee__c WHERE Phone__c IN : phoneSet]){
+            for(Employee__c newEmployee : employeesToInsert){
+                if(newEmployee.Phone__c == employee.Phone__c){
+                    newEmployee.addError('Duplicate Phone! Try Again.');
+                }
+            }
+        }
+    }
+    
+    //Creates a new task for restored records to be looked at
+    public static void RestoredRecordTask(List<Employee__c> restoredRecords){
+        	//Loops through the account records that are restored and creates a task relating to each one.
+			for(Employee__c e : restoredRecords){
+				Task newTask = new Task();
+				newTask.WhatId = e.Id;
+				newTask.Description = 'Update these restored records.';
+				newTask.Status = 'Not Started';
+				newTask.Subject = 'Other';
+				newTask.OwnerId = e.LastModifiedById;
+				newTask.Priority = 'Normal';
+			}
+    }
+    
+}
